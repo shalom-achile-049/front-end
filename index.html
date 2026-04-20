@@ -1,0 +1,1394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme" content="dark light">
+    <title>Onplex - Smart Online Exam Platform</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            /* Dark Theme Variables */
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+            --bg-card: rgba(30, 41, 59, 0.8);
+            --bg-gradient: linear-gradient(135deg, #0f172a, #1e293b);
+            --text-primary: #f1f5f9;
+            --text-secondary: #cbd5e1;
+            --accent-primary: #6366f1;
+            --accent-secondary: #818cf8;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --error: #ef4444;
+            --border: rgba(148, 163, 184, 0.2);
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            --glass-bg: rgba(15, 23, 42, 0.7);
+            --glass-border: rgba(148, 163, 184, 0.1);
+            
+            /* Typography */
+            --font-main: 'Segoe UI', system-ui, sans-serif;
+            --font-mono: 'SF Mono', Consolas, monospace;
+            
+            /* Layout */
+            --radius: 12px;
+            --radius-sm: 8px;
+            --spacing: 1rem;
+        }
+        
+        [data-theme="light"] {
+            /* Light Theme Variables */
+            --bg-primary: #f8fafc;
+            --bg-secondary: #e2e8f0;
+            --bg-card: rgba(255, 255, 255, 0.9);
+            --bg-gradient: linear-gradient(135deg, #f8fafc, #e2e8f0);
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --accent-primary: #4f46e5;
+            --accent-secondary: #6366f1;
+            --success: #059669;
+            --warning: #d97706;
+            --error: #dc2626;
+            --border: rgba(100, 116, 139, 0.2);
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            --glass-bg: rgba(255, 255, 255, 0.7);
+            --glass-border: rgba(203, 213, 225, 0.5);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-main);
+            background: var(--bg-gradient);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+            overflow-x: hidden;
+            transition: background 0.3s ease;
+        }
+
+        h1, h2, h3, h4 {
+            font-weight: 700;
+            line-height: 1.2;
+        }
+
+        h1 { font-size: 3rem; }
+        h2 { font-size: 2.25rem; }
+        h3 { font-size: 1.75rem; }
+        h4 { font-size: 1.25rem; }
+
+        .container {
+            width: 100%;
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--radius);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: 1px solid transparent;
+            outline: none;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: var(--accent-primary);
+            color: white;
+            box-shadow: 0 4px 6px rgba(99, 102, 241, 0.3);
+        }
+
+        .btn-primary:hover {
+            background: var(--accent-secondary);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 8px rgba(99, 102, 241, 0.4);
+        }
+
+        .btn-secondary {
+            background: var(--bg-card);
+            color: var(--text-primary);
+            border: 1px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(148, 163, 184, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .glass {
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+        }
+
+        /* Header */
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            padding: 1rem 0;
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .header-inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+            background: var(--accent-primary);
+            color: white;
+            font-weight: 800;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .nav-link {
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius-sm);
+            font-weight: 600;
+            cursor: pointer;
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            transition: all 0.2s ease;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            color: var(--text-primary);
+            background: rgba(99, 102, 241, 0.1);
+        }
+
+        .theme-toggle {
+            padding: 0.5rem;
+            border-radius: var(--radius-sm);
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .theme-toggle:hover {
+            background: rgba(99, 102, 241, 0.1);
+        }
+
+        /* Page Layout */
+        main {
+            padding: 2rem 0;
+        }
+
+        .page {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Hero Section */
+        .hero {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            margin-top: 2rem;
+        }
+
+        .hero h1 {
+            margin-bottom: 1.5rem;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+        }
+
+        .hero-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .stat-item {
+            padding: 1.5rem;
+            border-radius: var(--radius);
+            background: var(--bg-card);
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .dashboard-preview {
+            padding: 2rem;
+            border-radius: var(--radius);
+            background: var(--bg-card);
+        }
+
+        .dashboard-header {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: var(--accent-primary);
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+
+        .metric {
+            padding: 1.5rem;
+            border-radius: var(--radius);
+            background: var(--bg-primary);
+            text-align: center;
+        }
+
+        .metric-value {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Exam Page */
+        .exam-container {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .proctor-panel {
+            padding: 1.5rem;
+            border-radius: var(--radius);
+            background: var(--bg-card);
+        }
+
+        .question-panel {
+            padding: 2rem;
+            border-radius: var(--radius);
+            background: var(--bg-card);
+        }
+
+        .progress-bar {
+            height: 8px;
+            background: var(--bg-primary);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--success);
+            transition: width 0.3s ease;
+        }
+
+        .timer {
+            font-family: var(--font-mono);
+            font-weight: 700;
+            color: var(--accent-primary);
+            padding: 0.5rem;
+            border-radius: var(--radius-sm);
+            background: var(--bg-primary);
+        }
+
+        .option {
+            padding: 1rem;
+            margin-bottom: 0.75rem;
+            border-radius: var(--radius-sm);
+            background: var(--bg-primary);
+            border: 1px solid var(--border);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .option:hover {
+            border-color: var(--accent-primary);
+        }
+
+        .option.selected {
+            background: rgba(99, 102, 241, 0.1);
+            border-color: var(--accent-primary);
+        }
+
+        /* Teacher Hub */
+        .section-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .section-header p {
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0.5rem auto 0;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        .card {
+            padding: 1.5rem;
+            border-radius: var(--radius);
+            background: var(--bg-card);
+        }
+
+        .question-bank {
+            max-height: 500px;
+            overflow-y: auto;
+            margin-top: 1rem;
+        }
+
+        .question-item {
+            padding: 1rem;
+            margin-bottom: 0.75rem;
+            border-radius: var(--radius-sm);
+            background: var(--bg-primary);
+        }
+
+        /* Results Page */
+        #scoreDisplay {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--accent-primary);
+        }
+
+        #percentageDisplay {
+            font-size: 1.5rem;
+            color: var(--text-secondary);
+        }
+
+        #feedbackMessage {
+            margin-top: 1rem;
+            font-size: 1.1rem;
+        }
+
+        /* Features Grid */
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+        }
+
+        .feature-card {
+            padding: 1.5rem;
+            border-radius: var(--radius);
+            background: var(--bg-card);
+            transition: transform 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .feature-card h3 {
+            margin-bottom: 1rem;
+            color: var(--accent-primary);
+        }
+
+        /* Contact Form */
+        .contact-form {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .contact-form input,
+        .contact-form textarea {
+            padding: 0.75rem;
+            border-radius: var(--radius-sm);
+            background: var(--bg-primary);
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+        }
+
+        .contact-form textarea {
+            resize: vertical;
+        }
+
+        /* Footer */
+        footer {
+            padding: 3rem 0 2rem;
+            background: var(--bg-card);
+            border-top: 1px solid var(--border);
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .social-icon {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            transition: all 0.2s ease;
+        }
+
+        .social-icon:hover {
+            background: var(--accent-primary);
+            color: white;
+            transform: translateY(-3px);
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--accent-primary);
+        }
+
+        .copyright {
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .hero {
+                grid-template-columns: 1fr;
+            }
+            
+            .exam-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .grid-2 {
+                grid-template-columns: 1fr;
+            }
+            
+            .grid-3 {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .grid-3 {
+                grid-template-columns: 1fr;
+            }
+            
+            .hero-stats {
+                grid-template-columns: 1fr;
+            }
+            
+            .section-header h2 {
+                font-size: 1.75rem;
+            }
+            
+            h1 {
+                font-size: 2.25rem;
+            }
+        }
+
+        /* Animation */
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 0.8; }
+            50% { opacity: 0.4; }
+            100% { opacity: 0.8; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-inner">
+            <div class="logo">
+                <div class="logo-icon">O</div>
+                <span>Onplex</span>
+            </div>
+            <div class="nav-links">
+                <button class="nav-link active" data-page="home">Home</button>
+                <button class="nav-link" data-page="exam">Exam Demo</button>
+                <button class="nav-link" data-page="teacher">Teacher Hub</button>
+                <button class="nav-link" data-page="results">Results</button>
+                <button class="nav-link" data-page="features">Features</button>
+                <button class="nav-link" data-page="contact">Contact</button>
+                <button class="nav-link" data-page="testimonials">Testimonials</button>
+                <button class="nav-link" data-page="about">About</button>
+            </div>
+            <button class="theme-toggle" id="themeToggle">🌙 Dark</button>
+        </div>
+    </header>
+
+    <main>
+        <!-- HOME PAGE -->
+        <div class="page active" id="home">
+            <div class="container">
+                <div class="hero">
+                    <div>
+                        <h1>Smart Online Exams with Advanced Anti-Cheating</h1>
+                        <p>
+                            Onplex delivers secure, scalable online testing with AI-powered
+                            proctoring and a seamless experience for both educators and
+                            students. Trusted by 500+ institutions worldwide.
+                        </p>
+                        <div class="hero-stats">
+                            <div class="stat-item">
+                                <div class="stat-number">98.7%</div>
+                                <div>Integrity Rate</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-number">50K+</div>
+                                <div>Monthly Exams</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-number">24/7</div>
+                                <div>Support</div>
+                            </div>
+                        </div>
+                        <div style="display: flex; gap: 1rem; margin-top: 2rem;">
+                            <button class="btn btn-primary" data-page="exam">Start Demo Exam</button>
+                            <button class="btn btn-secondary" data-page="features">Explore Features</button>
+                        </div>
+                    </div>
+                    <div class="dashboard-preview">
+                        <div class="dashboard-header">Exam Dashboard Preview</div>
+                        <div class="dashboard-grid">
+                            <div class="metric">
+                                <div class="metric-value">12</div>
+                                <div>Active Exams</div>
+                            </div>
+                            <div class="metric">
+                                <div class="metric-value">84</div>
+                                <div>Completed Today</div>
+                            </div>
+                            <div class="metric">
+                                <div class="metric-value">76%</div>
+                                <div>Avg. Score</div>
+                            </div>
+                            <div class="metric">
+                                <div class="metric-value">98%</div>
+                                <div>Integrity Rate</div>
+                            </div>
+                        </div>
+                        <div style="margin-top: 1.5rem; padding: 1rem; background: var(--bg-primary); border-radius: var(--radius);">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                                <span>Student Monitoring</span>
+                                <span class="pulse" style="color: var(--success);">Active</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 100%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- EXAM DEMO PAGE -->
+        <div class="page" id="exam">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Exam Demonstration</h2>
+                    <p>Experience our anti-cheating technology in action</p>
+                </div>
+                <div class="exam-container">
+                    <div class="proctor-panel glass">
+                        <h3>Proctor Status</h3>
+                        <div class="progress-bar" style="margin: 1rem 0">
+                            <div class="progress-fill" style="width: 100%; background: var(--success)"></div>
+                        </div>
+                        <p><span id="proctorStatus">Active Monitoring</span></p>
+                        <div style="margin-top: 1.5rem">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                                <h4>Warning Log</h4>
+                                <span id="warningCount">0 warnings</span>
+                            </div>
+                            <div id="warningLog" style="font-size: 0.875rem; color: var(--text-secondary); max-height: 150px; overflow-y: auto; padding: 0.5rem; background: var(--bg-primary); border-radius: var(--radius-sm);"></div>
+                        </div>
+                        <div style="margin-top: 1.5rem">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                                <h4>Camera Feed</h4>
+                                <span style="color: var(--success)">Active</span>
+                            </div>
+                            <div style="height: 150px; background: var(--bg-primary); border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center;">
+                                <i class="fas fa-camera" style="font-size: 2rem; color: var(--text-secondary);"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="question-panel glass">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 1.5rem;">
+                            <span class="stat-item" style="padding: 0.5rem;" id="questionCounter">Question 1/3</span>
+                            <div class="timer" id="timerDisplay">10:00</div>
+                        </div>
+                        <div class="progress-bar" style="margin-bottom: 1.5rem">
+                            <div class="progress-fill" id="examProgress" style="width: 0%"></div>
+                        </div>
+                        <h2 id="questionText" style="margin-bottom: 1.5rem">Loading...</h2>
+                        <div id="optionsContainer"></div>
+                        <div style="display: flex; justify-content: space-between; margin-top: 2rem; gap: 0.75rem;">
+                            <button class="btn btn-secondary" id="prevQuestion">Previous</button>
+                            <button class="btn btn-primary" id="nextQuestion">Next</button>
+                        </div>
+                        <button class="btn btn-primary" id="submitExam" style="width: 100%; margin-top: 1.5rem; background: var(--error)">Submit Exam</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TEACHER HUB PAGE -->
+        <div class="page" id="teacher">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Exam Builder Dashboard</h2>
+                    <p>Create and manage your exam questions</p>
+                </div>
+                <div class="grid-2">
+                    <div class="card glass">
+                        <h3>Create New Question</h3>
+                        <input type="text" id="questionInput" placeholder="Enter question text..." style="width: 100%; padding: 0.75rem; margin: 1rem 0; background: var(--bg-primary); border: 1px solid var(--border); border-radius: var(--radius-sm); color: var(--text-primary);">
+                        <select id="questionTypeSelect" style="width: 100%; padding: 0.75rem; margin-bottom: 1rem; background: var(--bg-primary); border: 1px solid var(--border); border-radius: var(--radius-sm); color: var(--text-primary);">
+                            <option value="mcq">Multiple Choice</option>
+                            <option value="truefalse">True / False</option>
+                            <option value="essay">Essay Question</option>
+                        </select>
+                        <div id="optionsEditor"></div>
+                        <input type="text" id="correctAnswerInput" placeholder="Correct answer / keyword" style="width: 100%; padding: 0.75rem; margin: 1rem 0; background: var(--bg-primary); border: 1px solid var(--border); border-radius: var(--radius-sm);">
+                        <button class="btn btn-primary" id="addQuestionBtn" style="width: 100%">Add Question</button>
+                    </div>
+                    <div class="card glass">
+                        <h3>Question Bank <span id="questionCount">(0 questions)</span></h3>
+                        <div id="questionList" class="question-bank"></div>
+                        <button class="btn btn-primary" id="startExamBtn" style="width: 100%; margin-top: 1rem">Launch Exam</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- RESULTS PAGE -->
+        <div class="page" id="results">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Exam Results</h2>
+                    <p>Your performance summary</p>
+                </div>
+                <div class="grid-2">
+                    <div class="card glass" style="text-align: center; padding: 2rem;">
+                        <div class="stat-number" id="scoreDisplay">0/0</div>
+                        <p id="percentageDisplay" style="font-size: 1.5rem; margin: 0.5rem 0">0%</p>
+                        <div class="progress-bar" style="margin: 1.5rem 0">
+                            <div class="progress-fill" id="scoreBar" style="width: 0%"></div>
+                        </div>
+                        <p id="feedbackMessage" style="color: var(--text-secondary)"></p>
+                        <button class="btn btn-primary" data-page="exam" style="margin-top: 1.5rem">Retake Exam</button>
+                    </div>
+                    <div class="card glass">
+                        <h3>Detailed Breakdown</h3>
+                        <div id="resultsBreakdown" style="max-height: 400px; overflow-y: auto; margin-top: 1rem"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- FEATURES PAGE -->
+        <div class="page" id="features">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Enterprise-Grade Features</h2>
+                    <p>Everything you need for secure assessments</p>
+                </div>
+                <div class="grid-3">
+                    <div class="feature-card glass">
+                        <h3>AI-Powered Proctoring</h3>
+                        <p>Advanced computer vision detects suspicious behavior with 95% accuracy while respecting privacy.</p>
+                    </div>
+                    <div class="feature-card glass">
+                        <h3>Flexible Exam Settings</h3>
+                        <p>Customize time limits, question randomization, accessibility options, and grading parameters.</p>
+                    </div>
+                    <div class="feature-card glass">
+                        <h3>Multi-Device Support</h3>
+                        <p>Students can test on any device - desktop, tablet, or mobile with full feature parity.</p>
+                    </div>
+                    <div class="feature-card glass">
+                        <h3>Real-Time Analytics</h3>
+                        <p>Comprehensive dashboards provide instant insights into student performance and exam integrity.</p>
+                    </div>
+                    <div class="feature-card glass">
+                        <h3>Seamless Integrations</h3>
+                        <p>Connect with your existing LMS, SIS, or HR systems via our robust API.</p>
+                    </div>
+                    <div class="feature-card glass">
+                        <h3>Global Accessibility</h3>
+                        <p>Supports 20+ languages with region-specific optimization for international testing.</p>
+                    </div>
+                    <div class="feature-card glass">
+                        <h3>Automated Grading</h3>
+                        <p>Instant scoring for objective questions with detailed feedback for students.</p>
+                    </div>
+                    <div class="feature-card glass">
+                        <h3>Secure Browser</h3>
+                        <p>Lockdown browser option prevents cheating during high-stakes exams.</p>
+                    </div>
+                    <div class="feature-card glass">
+                        <h3>Export Reports</h3>
+                        <p>Download results in CSV, PDF, and Excel formats for record keeping.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CONTACT PAGE -->
+        <div class="page" id="contact">
+            <div class="container">
+                <div class="grid-2" style="gap: 3rem">
+                    <div>
+                        <h2>Get In Touch</h2>
+                        <p style="color: var(--text-secondary); margin: 1rem 0 1.5rem">Have questions? Our team is ready to help you transform your assessment process.</p>
+                        <div class="card glass" style="margin-bottom: 1rem">
+                            <strong>Email:</strong> hello@onplex.com
+                        </div>
+                        <div class="card glass" style="margin-bottom: 1rem">
+                            <strong>Phone:</strong> +1 (800) 123-4567
+                        </div>
+                        <div class="card glass">
+                            <strong>Address:</strong> 123 Innovation Drive, San Francisco, CA 94103
+                        </div>
+                    </div>
+                    <div class="card glass">
+                        <h3>Send us a message</h3>
+                        <form class="contact-form" id="contactForm">
+                            <input type="text" placeholder="Your Name">
+                            <input type="email" placeholder="Email Address">
+                            <input type="text" placeholder="Subject">
+                            <textarea rows="5" placeholder="Message"></textarea>
+                            <button type="submit" class="btn btn-primary">Send Message</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TESTIMONIALS PAGE -->
+        <div class="page" id="testimonials">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Trusted by Leading Institutions</h2>
+                    <p>Hear from educators and certification bodies worldwide</p>
+                </div>
+                <div class="grid-3">
+                    <div class="feature-card glass">
+                        <p>
+                            "Onplex transformed our certification process. The AI proctoring caught violations we never would have detected manually."
+                        </p>
+                        <p style="margin-top: 1rem">
+                            <strong>— Sarah Johnson</strong><br>Director, Global Certification Board
+                        </p>
+                    </div>
+                    <div class="feature-card glass">
+                        <p>
+                            "Our remote testing volume doubled. Onplex scaled effortlessly while maintaining exam security and integrity."
+                        </p>
+                        <p style="margin-top: 1rem">
+                            <strong>— Michael Chen</strong><br>University Assessment Director
+                        </p>
+                    </div>
+                    <div class="feature-card glass">
+                        <p>
+                            "The customizable exam settings allowed us to perfectly match our unique testing requirements with minimal setup."
+                        </p>
+                        <p style="margin-top: 1rem">
+                            <strong>— Emma Rodriguez</strong><br>Corporate Training Manager
+                        </p>
+                    </div>
+                    <div class="feature-card glass">
+                        <p>
+                            "Best platform we've used. Simple interface but powerful features. Our students love the experience."
+                        </p>
+                        <p style="margin-top: 1rem">
+                            <strong>— David Kim</strong><br>EdTech Director
+                        </p>
+                    </div>
+                    <div class="feature-card glass">
+                        <p>
+                            "Implementation was smooth and support is outstanding. The anti-cheat technology gives us peace of mind."
+                        </p>
+                        <p style="margin-top: 1rem">
+                            <strong>— Emily Chen</strong><br>Online Learning Coordinator
+                        </p>
+                    </div>
+                    <div class="feature-card glass">
+                        <p>
+                            "Onplex saved us hundreds of hours in grading time. The automatic scoring is incredibly accurate."
+                        </p>
+                        <p style="margin-top: 1rem">
+                            <strong>— Prof. James Wilson</strong><br>Oxford University
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ABOUT PAGE -->
+        <div class="page" id="about">
+            <div class="container">
+                <div class="card glass" style="max-width: 900px; margin: 0 auto; padding: 2rem;">
+                    <h2>About Onplex</h2>
+                    <p style="margin: 1rem 0">
+                        Founded in 2020, Onplex is on a mission to democratize education through innovative assessment technology. Our platform combines cutting-edge AI proctoring with intuitive design to create fair, secure, and accessible exams for everyone, everywhere.
+                    </p>
+                    <p>
+                        Trusted by over 500 institutions across 30+ countries, we're committed to academic integrity and student success. Our team of engineers, educators, and designers work tirelessly to build the future of online assessment.
+                    </p>
+                    <div style="margin-top: 2rem">
+                        <h3>Our Core Values</h3>
+                        <div class="grid-3" style="margin-top: 1rem; gap: 1rem;">
+                            <div class="card" style="text-align: center; padding: 1rem;">Integrity</div>
+                            <div class="card" style="text-align: center; padding: 1rem;">Innovation</div>
+                            <div class="card" style="text-align: center; padding: 1rem;">Inclusion</div>
+                            <div class="card" style="text-align: center; padding: 1rem;">Excellence</div>
+                            <div class="card" style="text-align: center; padding: 1rem;">Global Access</div>
+                            <div class="card" style="text-align: center; padding: 1rem;">24/7 Support</div>
+                        </div>
+                    </div>
+                    <div style="margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--border);">
+                        <h3>Certifications</h3>
+                        <div style="display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 1rem;">
+                            <span class="stat-item" style="padding: 0.5rem 1rem;">ISO 27001 Certified</span>
+                            <span class="stat-item" style="padding: 0.5rem 1rem;">GDPR Compliant</span>
+                            <span class="stat-item" style="padding: 0.5rem 1rem;">SOC 2 Type II</span>
+                            <span class="stat-item" style="padding: 0.5rem 1rem;">AWS Partner</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="social-links">
+                <a href="https://twitter.com" target="_blank" class="social-icon">
+                    <i class="fab fa-twitter"></i>
+                </a>
+                <a href="https://linkedin.com" target="_blank" class="social-icon">
+                    <i class="fab fa-linkedin-in"></i>
+                </a>
+                <a href="https://github.com" target="_blank" class="social-icon">
+                    <i class="fab fa-github"></i>
+                </a>
+                <a href="https://instagram.com" target="_blank" class="social-icon">
+                    <i class="fab fa-instagram"></i>
+                </a>
+                <a href="https://youtube.com" target="_blank" class="social-icon">
+                    <i class="fab fa-youtube"></i>
+                </a>
+                <a href="https://facebook.com" target="_blank" class="social-icon">
+                    <i class="fab fa-facebook-f"></i>
+                </a>
+            </div>
+            <div class="footer-links">
+                <a href="#" data-page="home">Home</a>
+                <a href="#" data-page="features">Features</a>
+                <a href="#" data-page="contact">Contact</a>
+                <a href="#" data-page="about">About</a>
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+                <a href="#" data-page="testimonials">Testimonials</a>
+                <a href="#" data-page="teacher">For Educators</a>
+            </div>
+            <div class="copyright">
+                <p>© 2024 Onplex. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Theme Toggle
+        const themeToggle = document.getElementById("themeToggle");
+        const root = document.documentElement;
+        const savedTheme = localStorage.getItem("theme") || "dark";
+        
+        function applyTheme(theme) {
+            root.setAttribute("data-theme", theme);
+            themeToggle.textContent = theme === "light" ? "☀️ Light" : "🌙 Dark";
+            localStorage.setItem("theme", theme);
+        }
+        
+        applyTheme(savedTheme);
+        
+        themeToggle.addEventListener("click", () => {
+            const newTheme = root.getAttribute("data-theme") === "light" ? "dark" : "light";
+            applyTheme(newTheme);
+        });
+
+        // Navigation
+        document.querySelectorAll("[data-page]").forEach((btn) => {
+            btn.addEventListener("click", (e) => {
+                const pageId = btn.getAttribute("data-page");
+                
+                // Update active page
+                document.querySelectorAll(".page").forEach((p) => p.classList.remove("active"));
+                document.getElementById(pageId).classList.add("active");
+                
+                // Update active nav link
+                document.querySelectorAll(".nav-link").forEach((n) => n.classList.remove("active"));
+                btn.classList.add("active");
+                
+                // Page-specific initialization
+                if (pageId === "exam") initExam();
+                if (pageId === "teacher") renderQuestionList();
+                if (pageId === "results") showResults();
+                
+                e.preventDefault();
+            });
+        });
+
+        // Anti-Cheat System
+        let warnings = JSON.parse(localStorage.getItem("warnings")) || [];
+        
+        document.addEventListener("visibilitychange", () => {
+            if (document.hidden && document.getElementById("exam").classList.contains("active")) {
+                const timestamp = new Date().toLocaleTimeString();
+                warnings.push(`${timestamp}: Tab switch detected`);
+                
+                // Update warning log display
+                const logDiv = document.getElementById("warningLog");
+                if (logDiv) {
+                    logDiv.innerHTML = warnings.map(w => `<div>⚠️ ${w}</div>`).join("");
+                    logDiv.scrollTop = logDiv.scrollHeight;
+                }
+                
+                // Update warning count
+                document.getElementById("warningCount").textContent = `${warnings.length} warnings`;
+                
+                // Save to localStorage
+                localStorage.setItem("warnings", JSON.stringify(warnings));
+                
+                // Show alert after multiple warnings
+                if (warnings.length >= 2) {
+                    document.getElementById("proctorStatus").textContent = "Suspicious Activity Detected";
+                    document.getElementById("proctorStatus").style.color = "var(--warning)";
+                    
+                    // Show visual warning
+                    document.body.style.backgroundColor = "rgba(239, 68, 68, 0.1)";
+                    setTimeout(() => {
+                        document.body.style.backgroundColor = "";
+                    }, 1000);
+                }
+            }
+        });
+
+        // Exam Questions Data
+        let questions = JSON.parse(localStorage.getItem("examQuestions")) || [
+            {
+                id: 1,
+                text: "What is the capital of France?",
+                type: "mcq",
+                options: ["London", "Berlin", "Paris", "Madrid"],
+                correct: "Paris"
+            },
+            {
+                id: 2,
+                text: "JavaScript is the same as Java.",
+                type: "truefalse",
+                correct: "False"
+            },
+            {
+                id: 3,
+                text: "Explain what CSS is used for in web development.",
+                type: "essay",
+                correct: "styling"
+            }
+        ];
+        
+        let userAnswers = JSON.parse(localStorage.getItem("userAnswers")) || {};
+        let currentIndex = 0;
+        let timerInterval;
+        let timeLeft = 600; // 10 minutes
+
+        // Initialize Exam
+        function initExam() {
+            // Reset warnings for this session
+            warnings = [];
+            localStorage.setItem("warnings", JSON.stringify(warnings));
+            document.getElementById("warningLog").innerHTML = "";
+            document.getElementById("warningCount").textContent = "0 warnings";
+            document.getElementById("proctorStatus").textContent = "Active Monitoring";
+            document.getElementById("proctorStatus").style.color = "";
+            
+            // Reset exam state
+            currentIndex = 0;
+            timeLeft = 600;
+            userAnswers = {};
+            localStorage.setItem("userAnswers", JSON.stringify(userAnswers));
+            
+            // Initialize timer
+            updateTimerDisplay();
+            if (timerInterval) clearInterval(timerInterval);
+            timerInterval = setInterval(updateTimer, 1000);
+            
+            // Render first question
+            renderQuestion();
+        }
+
+        // Timer Functions
+        function updateTimer() {
+            if (timeLeft <= 0) {
+                clearInterval(timerInterval);
+                submitExam();
+            } else {
+                timeLeft--;
+                updateTimerDisplay();
+            }
+        }
+
+        function updateTimerDisplay() {
+            const m = Math.floor(timeLeft / 60);
+            const s = timeLeft % 60;
+            document.getElementById("timerDisplay").textContent = 
+                `${m.toString().padStart(2, "0")}:${s.toString().padStart(2, "0")}`;
+        }
+
+        // Question Rendering
+        function renderQuestion() {
+            const q = questions[currentIndex];
+            if (!q) return;
+            
+            document.getElementById("questionCounter").textContent = 
+                `Question ${currentIndex + 1}/${questions.length}`;
+            
+            document.getElementById("questionText").textContent = q.text;
+            
+            document.getElementById("examProgress").style.width = 
+                `${((currentIndex + 1) / questions.length) * 100}%`;
+            
+            const container = document.getElementById("optionsContainer");
+            container.innerHTML = "";
+            
+            if (q.type === "mcq") {
+                q.options.forEach(opt => {
+                    const option = document.createElement("div");
+                    option.className = "option";
+                    option.textContent = opt;
+                    if (userAnswers[q.id] === opt) {
+                        option.classList.add("selected");
+                    }
+                    
+                    option.addEventListener("click", () => {
+                        document.querySelectorAll(".option").forEach(el => {
+                            el.classList.remove("selected");
+                        });
+                        option.classList.add("selected");
+                        userAnswers[q.id] = opt;
+                        localStorage.setItem("userAnswers", JSON.stringify(userAnswers));
+                    });
+                    
+                    container.appendChild(option);
+                });
+            } else if (q.type === "truefalse") {
+                ["True", "False"].forEach(opt => {
+                    const option = document.createElement("div");
+                    option.className = "option";
+                    option.textContent = opt;
+                    if (userAnswers[q.id] === opt) {
+                        option.classList.add("selected");
+                    }
+                    
+                    option.addEventListener("click", () => {
+                        document.querySelectorAll(".option").forEach(el => {
+                            el.classList.remove("selected");
+                        });
+                        option.classList.add("selected");
+                        userAnswers[q.id] = opt;
+                        localStorage.setItem("userAnswers", JSON.stringify(userAnswers));
+                    });
+                    
+                    container.appendChild(option);
+                });
+            } else {
+                const textArea = document.createElement("textarea");
+                textArea.style.width = "100%";
+                textArea.style.height = "150px";
+                textArea.style.padding = "1rem";
+                textArea.style.fontFamily = "var(--font-main)";
+                textArea.style.background = "var(--bg-primary)";
+                textArea.style.border = "1px solid var(--border)";
+                textArea.style.borderRadius = "var(--radius-sm)";
+                textArea.style.color = "var(--text-primary)";
+                textArea.placeholder = "Type your answer here...";
+                
+                if (userAnswers[q.id]) {
+                    textArea.value = userAnswers[q.id];
+                }
+                
+                textArea.addEventListener("input", (e) => {
+                    userAnswers[q.id] = e.target.value;
+                    localStorage.setItem("userAnswers", JSON.stringify(userAnswers));
+                });
+                
+                container.appendChild(textArea);
+            }
+            
+            document.getElementById("prevQuestion").disabled = currentIndex === 0;
+            document.getElementById("nextQuestion").disabled = currentIndex === questions.length - 1;
+        }
+
+        // Question Navigation
+        document.getElementById("prevQuestion")?.addEventListener("click", () => {
+            if (currentIndex > 0) {
+                currentIndex--;
+                renderQuestion();
+            }
+        });
+
+        document.getElementById("nextQuestion")?.addEventListener("click", () => {
+            if (currentIndex < questions.length - 1) {
+                currentIndex++;
+                renderQuestion();
+            }
+        });
+
+        // Exam Submission
+        document.getElementById("submitExam")?.addEventListener("click", () => {
+            if (confirm("Are you sure you want to submit the exam?")) {
+                submitExam();
+            }
+        });
+
+        function submitExam() {
+            clearInterval(timerInterval);
+            
+            // Calculate score
+            let score = 0;
+            questions.forEach(q => {
+                const answer = userAnswers[q.id];
+                if (q.type === "essay") {
+                    if (answer && answer.toLowerCase().includes(q.correct.toLowerCase())) {
+                        score++;
+                    }
+                } else {
+                    if (answer && answer.toLowerCase() === q.correct.toLowerCase()) {
+                        score++;
+                    }
+                }
+            });
+            
+            // Save results
+            localStorage.setItem("examResults", JSON.stringify({
+                score,
+                total: questions.length,
+                warnings: warnings.length
+            }));
+            
+            // Redirect to results page
+            document.querySelector('[data-page="results"]').click();
+        }
+
+        // Results Display
+        function showResults() {
+            const results = JSON.parse(localStorage.getItem("examResults")) || { score: 0, total: 0 };
+            const score = results.score;
+            const total = results.total;
+            const percentage = total ? Math.round((score / total) * 100) : 0;
+            
+            document.getElementById("scoreDisplay").textContent = `${score}/${total}`;
+            document.getElementById("percentageDisplay").textContent = `${percentage}%`;
+            document.getElementById("scoreBar").style.width = `${percentage}%`;
+            
+            let feedback = "";
+            if (percentage >= 90) feedback = "Excellent! You've mastered the material.";
+            else if (percentage >= 70) feedback = "Great job! Solid understanding.";
+            else if (percentage >= 50) feedback = "Good effort, keep practicing!";
+            else feedback = "Review the material and try again.";
+            
+            document.getElementById("feedbackMessage").textContent = feedback;
+            
+            // Generate breakdown
+            const breakdownEl = document.getElementById("resultsBreakdown");
+            breakdownEl.innerHTML = "";
+            
+            questions.forEach((q, i) => {
+                const answer = userAnswers[q.id] || "No answer provided";
+                const isCorrect = (
+                    (q.type === "essay" && answer.toLowerCase().includes(q.correct.toLowerCase())) ||
+                    (answer.toLowerCase() === q.correct.toLowerCase())
+                );
+                
+                const item = document.createElement("div");
+                item.className = "question-item";
+                item.innerHTML = `
+                    <div style="margin-bottom: 0.5rem;">
+                        <strong>Q${i+1}:</strong> ${q.text}
+                    </div>
+                    <div style="display: flex; justify-content: space-between;">
+                        <div style="color: ${isCorrect ? "var(--success)" : "var(--error)"}">
+                            ${isCorrect ? "✓ Correct" : "✗ Incorrect"}
+                        </div>
+                        <div style="font-size: 0.875rem;">
+                            Your answer: ${answer.substring(0, 40)}${answer.length > 40 ? "..." : ""}
+                        </div>
+                    </div>
+                `;
+                
+                breakdownEl.appendChild(item);
+            });
+        }
+
+        // Teacher Hub
+        function renderQuestionList() {
+            const container = document.getElementById("questionList");
+            document.getElementById("questionCount").textContent = 
+                `(${questions.length} questions)`;
+            
+            container.innerHTML = "";
+            
+            if (questions.length === 0) {
+                container.innerHTML = "<p>No questions yet. Add your first question!</p>";
+                return;
+            }
+            
+            questions.forEach((q, i) => {
+                const item = document.createElement("div");
+                item.className = "question-item";
+                item.innerHTML = `
+                    <div style="margin-bottom: 0.5rem;">
+                        <strong>Q${i+1}:</strong> ${q.text}
+                    </div>
+                    <div style="display: flex; justify-content: space-between; font-size: 0.875rem;">
+                        <div>Type: ${q.type}</div>
+                        <button class="btn btn-secondary" data-delete="${q.id}" style="padding: 0.25rem 0.5rem;">Delete</button>
+                    </div>
+                `;
+                
+                container.appendChild(item);
+            });
+            
+            // Add delete handlers
+            document.querySelectorAll("[data-delete]").forEach(btn => {
+                btn.addEventListener("click", () => {
+                    const id = btn.getAttribute("data-delete");
+                    questions = questions.filter(q => q.id != id);
+                    saveQuestions();
+                    renderQuestionList();
+                });
+            });
+        }
+
+        function saveQuestions() {
+            localStorage.setItem("examQuestions", JSON.stringify(questions));
+        }
+
+        document.getElementById("addQuestionBtn")?.addEventListener("click", () => {
+            const text = document.getElementById("questionInput").value.trim();
+            const type = document.getElementById("questionTypeSelect").value;
+            const correct = document.getElementById("correctAnswerInput").value.trim();
+            
+            if (!text || !correct) {
+                alert("Please fill in both question and correct answer fields");
+                return;
+            }
+            
+            questions.push({
+                id: Date.now(),
+                text,
+                type,
+                correct,
+                options: type === "mcq" ? ["Option 1", "Option 2", "Option 3", "Option 4"] : []
+            });
+            
+            saveQuestions();
+            renderQuestionList();
+            
+            // Clear form
+            document.getElementById("questionInput").value = "";
+            document.getElementById("correctAnswerInput").value = "";
+        });
+
+        document.getElementById("startExamBtn")?.addEventListener("click", () => {
+            // Reset exam state
+            warnings = [];
+            localStorage.setItem("warnings", JSON.stringify(warnings));
+            userAnswers = {};
+            localStorage.setItem("userAnswers", JSON.stringify(userAnswers));
+            
+            // Go to exam page
+            document.querySelector('[data-page="exam"]').click();
+        });
+
+        // Contact Form
+        document.getElementById("contactForm")?.addEventListener("submit", (e) => {
+            e.preventDefault();
+            alert("Thank you for your message! We'll get back to you soon.");
+            e.target.reset();
+        });
+
+        // Initialize
+        renderQuestionList();
+    </script>
+</body>
+</html>
