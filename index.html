@@ -1,0 +1,491 @@
+<!-- index.html -->
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Onplex – Smart Online Exam Platform</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <!-- Top Nav -->
+  <header class="topbar" role="banner">
+    <div class="container topbar__inner">
+      <div class="brand" aria-label="Onplex home">
+        <span class="brand__mark" aria-hidden="true">◎</span>
+        <span class="brand__name">Onplex</span>
+        <span class="brand__tag">Smart Exams</span>
+      </div>
+
+      <nav class="nav" aria-label="Primary navigation">
+        <button class="nav__link js-show" data-target="landing" type="button">Home</button>
+        <button class="nav__link js-show" data-target="student" type="button">Student</button>
+        <button class="nav__link js-show" data-target="teacher" type="button">Teacher</button>
+        <button class="nav__link js-show" data-target="results" type="button">Results</button>
+      </nav>
+
+      <div class="topbar__actions">
+        <button class="icon-btn" id="darkModeToggle" type="button" aria-label="Toggle dark mode">
+          <span class="icon-btn__icon" aria-hidden="true">☾</span>
+          <span class="icon-btn__label">Dark</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main" class="main" role="main">
+    <!-- Loading Overlay -->
+    <div class="loader" id="loader" aria-hidden="true">
+      <div class="loader__card">
+        <div class="spinner" aria-hidden="true"></div>
+        <div class="loader__text">
+          <div class="h6">Onplex is warming up</div>
+          <p class="muted">Preparing demo experience…</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- LANDING PAGE -->
+    <section class="page" data-page="landing" aria-labelledby="landingTitle">
+      <div class="hero">
+        <div class="container hero__grid">
+          <div class="hero__copy">
+            <div class="pill">
+              <span class="pill__dot" aria-hidden="true"></span>
+              Anti-cheating • Remote exams • Smart UI
+            </div>
+
+            <h1 id="landingTitle" class="display">
+              Onplex – Smart Online Exam Platform
+            </h1>
+
+            <p class="lead">
+              Deliver remote assessments with flexible question types and a UI-driven anti-cheating simulation:
+              warnings, tab-switch detection, and a mock “camera” proctor panel.
+            </p>
+
+            <div class="hero__cta">
+              <button class="btn btn--primary js-show" data-target="student" type="button">
+                Start Exam
+              </button>
+              <button class="btn btn--ghost js-show" data-target="teacher" type="button">
+                Create Exam
+              </button>
+            </div>
+
+            <div class="hero__meta">
+              <div class="stat">
+                <div class="stat__value">MCQ</div>
+                <div class="stat__label">Multiple choice</div>
+              </div>
+              <div class="stat">
+                <div class="stat__value">T/F</div>
+                <div class="stat__label">True / False</div>
+              </div>
+              <div class="stat">
+                <div class="stat__value">Text</div>
+                <div class="stat__label">Short answer</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="hero__visual" aria-hidden="true">
+            <div class="glass card card--hero">
+              <div class="card__top">
+                <div class="card__title">Proctor Dashboard (Mock)</div>
+                <div class="badge badge--ok">Live UI Simulation</div>
+              </div>
+
+              <div class="proctor">
+                <div class="proctor__cam">
+                  <div class="proctor__camFrame">
+                    <div class="proctor__scanline"></div>
+                    <div class="proctor__camLabel">Camera</div>
+                  </div>
+                  <div class="proctor__camMeta">
+                    <div class="tiny">Monitoring tab focus</div>
+                    <div class="tiny muted">Switch tabs triggers warnings</div>
+                  </div>
+                </div>
+
+                <div class="proctor__side">
+                  <div class="meter">
+                    <div class="meter__row">
+                      <span class="tiny">Focus</span>
+                      <span class="tiny" id="focusBadge">Good</span>
+                    </div>
+                    <div class="meter__bar">
+                      <span class="meter__barFill" style="width: 86%"></span>
+                    </div>
+                  </div>
+
+                  <div class="divider"></div>
+
+                  <div class="list">
+                    <div class="list__item">
+                      <span class="dot dot--blue" aria-hidden="true"></span>
+                      <span>Smart timer with progress</span>
+                    </div>
+                    <div class="list__item">
+                      <span class="dot dot--purple" aria-hidden="true"></span>
+                      <span>Navigation & answer persistence</span>
+                    </div>
+                    <div class="list__item">
+                      <span class="dot dot--pink" aria-hidden="true"></span>
+                      <span>Anti-cheat warnings (demo)</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="card__bottom">
+                <span class="tiny muted">Note: This is a frontend-only demo (no real camera).</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="container section">
+        <div class="section__head">
+          <h2 class="h3">Built for real exam workflows</h2>
+          <p class="muted">
+            A clean UI foundation for remote assessments—designed to feel trustworthy, fast, and modern.
+          </p>
+        </div>
+
+        <div class="grid grid--3">
+          <article class="feature card">
+            <div class="feature__icon" aria-hidden="true">↯</div>
+            <h3 class="h4">Remote Exams</h3>
+            <p class="muted">
+              Timer, progress, and smooth question navigation for uninterrupted sessions.
+            </p>
+          </article>
+
+          <article class="feature card">
+            <div class="feature__icon" aria-hidden="true">⛨</div>
+            <h3 class="h4">Anti-Cheating System</h3>
+            <p class="muted">
+              Tab-switch detection via the Visibility API, plus mock proctor UI and warnings.
+            </p>
+          </article>
+
+          <article class="feature card">
+            <div class="feature__icon" aria-hidden="true">◈</div>
+            <h3 class="h4">Flexible Questions</h3>
+            <p class="muted">
+              Support for MCQ, True/False, and short answer with a simple scoring demo.
+            </p>
+          </article>
+
+          <article class="feature card">
+            <div class="feature__icon" aria-hidden="true">＋</div>
+            <h3 class="h4">Easy Exam Creation</h3>
+            <p class="muted">
+              Teacher panel to dynamically add options and compose a question set.
+            </p>
+          </article>
+
+          <article class="feature card">
+            <div class="feature__icon" aria-hidden="true">⏱</div>
+            <h3 class="h4">Smart Timer</h3>
+            <p class="muted">
+              Countdown with auto-submit at the end and clear remaining time.
+            </p>
+          </article>
+
+          <article class="feature card">
+            <div class="feature__icon" aria-hidden="true">⌁</div>
+            <h3 class="h4">Production-Level UI</h3>
+            <p class="muted">
+              Responsive layout, smooth transitions, and polished UX patterns.
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- STUDENT EXAM INTERFACE -->
+    <section class="page" data-page="student" aria-labelledby="studentTitle">
+      <div class="container section">
+        <div class="section__head section__head--row">
+          <div>
+            <h2 id="studentTitle" class="h3">Student Exam</h2>
+            <p class="muted">Answer questions with progress, timer, and anti-cheat simulation.</p>
+          </div>
+          <div class="student__topRight">
+            <div class="chip" title="Focus status (demo)">
+              <span class="chip__dot" id="chipDot" aria-hidden="true"></span>
+              <span id="chipText">Focus: Good</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="layout">
+          <!-- Proctor / Sidebar -->
+          <aside class="sidebar card glass" aria-label="Proctor sidebar (mock)">
+            <div class="sidebar__head">
+              <div class="card__title">Proctor Panel</div>
+              <span class="badge badge--warn" id="proctorWarningBadge">No Warnings</span>
+            </div>
+
+            <div class="proctor__cam">
+              <div class="proctor__camFrame">
+                <div class="proctor__scanline" id="scanline"></div>
+                <div class="proctor__camLabel">Camera (Mock)</div>
+                <div class="proctor__camFace">
+                  <div class="faceRing" aria-hidden="true"></div>
+                </div>
+              </div>
+              <div class="proctor__camMeta">
+                <div class="tiny">Visibility API monitoring</div>
+                <div class="tiny muted">Switching tabs triggers an alert</div>
+              </div>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="focusLog" aria-label="Anti-cheat log">
+              <div class="tiny muted">Anti-cheat events</div>
+              <ul class="focusLog__list" id="cheatLog"></ul>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="sidebar__foot">
+              <div class="tiny muted">
+                Tip: Try switching tabs to see the warning.
+              </div>
+            </div>
+          </aside>
+
+          <!-- Exam Card -->
+          <div class="content card glass" aria-label="Exam interface">
+            <div class="content__head">
+              <div class="content__titleWrap">
+                <div class="card__title">Onplex Exam Session</div>
+                <div class="tiny muted">Frontend-only demo (no backend).</div>
+              </div>
+
+              <div class="timer" aria-label="Exam timer">
+                <div class="timer__label">Time left</div>
+                <div class="timer__value" id="timerValue">--:--</div>
+              </div>
+            </div>
+
+            <div class="content__progress">
+              <div class="progress">
+                <div class="progress__bar" aria-hidden="true">
+                  <span class="progress__fill" id="progressFill" style="width: 10%"></span>
+                </div>
+                <div class="progress__meta">
+                  <span class="tiny muted" id="progressMeta">Question 1 of 1</span>
+                  <span class="tiny" id="progressPct">10%</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Question -->
+            <div class="question">
+              <div class="question__top">
+                <div class="question__type" id="questionType">Type: --</div>
+                <div class="question__index" id="questionIndex">Q1</div>
+              </div>
+
+              <h3 class="question__title" id="questionTitle">—</h3>
+              <p class="question__hint muted" id="questionHint"></p>
+
+              <div class="question__body" id="questionBody">
+                <!-- Rendered by JS -->
+              </div>
+            </div>
+
+            <!-- Navigation -->
+            <div class="content__nav">
+              <button class="btn btn--ghost" id="prevBtn" type="button">Previous</button>
+
+              <div class="content__navMid">
+                <div class="tiny muted">Answer is saved locally while you navigate.</div>
+              </div>
+
+              <button class="btn btn--primary" id="nextBtn" type="button">Next</button>
+            </div>
+
+            <!-- Submit -->
+            <div class="content__submit">
+              <button class="btn btn--danger" id="submitBtn" type="button">
+                Submit Exam
+              </button>
+
+              <div class="tiny muted" id="autosaveHint">
+                Progress persistence: <span class="mono">LocalStorage</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TEACHER EXAM CREATION -->
+    <section class="page" data-page="teacher" aria-labelledby="teacherTitle">
+      <div class="container section">
+        <div class="section__head section__head--row">
+          <div>
+            <h2 id="teacherTitle" class="h3">Exam Creation Panel</h2>
+            <p class="muted">Create questions and preview a scoring-ready structure.</p>
+          </div>
+          <div class="teacher__topRight">
+            <button class="btn btn--ghost" id="loadDemoExamBtn" type="button">
+              Load Demo Questions
+            </button>
+          </div>
+        </div>
+
+        <div class="layout layout--teacher">
+          <!-- Form -->
+          <div class="content card glass">
+            <div class="content__head">
+              <div>
+                <div class="card__title">Create a Question</div>
+                <div class="tiny muted">Add options dynamically (MCQ / True-False).</div>
+              </div>
+              <div class="tiny muted" id="teacherMeta">Ready</div>
+            </div>
+
+            <form class="form" id="questionForm" autocomplete="off">
+              <div class="field">
+                <label for="qTitle" class="label">Question title</label>
+                <input id="qTitle" class="input" type="text" placeholder="e.g., Which language is used for styling web pages?" required />
+              </div>
+
+              <div class="field">
+                <label for="qType" class="label">Select type</label>
+                <select id="qType" class="select" required>
+                  <option value="mcq">MCQ</option>
+                  <option value="tf">True / False</option>
+                  <option value="text">Text (short answer)</option>
+                </select>
+              </div>
+
+              <!-- Options area (dynamic) -->
+              <div class="field">
+                <div class="labelRow">
+                  <label class="label">Options</label>
+                  <button class="btn btn--tiny btn--ghost" id="addOptionBtn" type="button">Add option</button>
+                </div>
+                <div id="optionsArea" class="options">
+                  <!-- JS -->
+                </div>
+                <div class="tiny muted" id="optionsHint">
+                  MCQ: add 2+ options. True/False: keep default true/false. Text: no options.
+                </div>
+              </div>
+
+              <div class="field">
+                <label class="label" for="correctValue">Correct answer (for scoring demo)</label>
+                <div class="correct">
+                  <input id="correctValue" class="input" type="text" placeholder="e.g., Option 2 (for MCQ) / true (for TF) / short keyword (for Text)" required />
+                  <div class="tiny muted">
+                    Scoring demo: MCQ/TF uses exact match (case-insensitive). Text checks if your input contains the keyword.
+                  </div>
+                </div>
+              </div>
+
+              <div class="form__actions">
+                <button class="btn btn--primary" id="addQuestionBtn" type="submit">
+                  Add Question
+                </button>
+                <button class="btn btn--ghost" id="clearQuestionsBtn" type="button">
+                  Clear
+                </button>
+              </div>
+            </form>
+
+            <div class="divider divider--soft"></div>
+
+            <div class="callout">
+              <div class="callout__icon" aria-hidden="true">✓</div>
+              <div>
+                <div class="h6">How the demo scoring works</div>
+                <div class="tiny muted">
+                  This is UI logic only. Correctness is computed on submit inside the browser.
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Created Questions -->
+          <div class="asideList card glass">
+            <div class="asideList__head">
+              <div class="card__title">Created Questions</div>
+              <div class="tiny muted" id="questionsCount">0 questions</div>
+            </div>
+
+            <div class="questionsList" id="questionsList">
+              <!-- JS -->
+            </div>
+
+            <div class="asideList__foot">
+              <button class="btn btn--primary w100 js-show" data-target="student" id="startFromTeacherBtn" type="button">
+                Start Exam with Created Set
+              </button>
+              <div class="tiny muted">
+                Tip: switch back to Student to run the demo.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- RESULTS PAGE -->
+    <section class="page" data-page="results" aria-labelledby="resultsTitle">
+      <div class="container section">
+        <div class="section__head section__head--center">
+          <h2 id="resultsTitle" class="h3">Results</h2>
+          <p class="muted">Your performance summary from the Onplex demo scoring.</p>
+        </div>
+
+        <div class="resultsGrid">
+          <div class="resultCard card glass">
+            <div class="resultCard__top">
+              <div class="badge badge--ok" id="resultBadge">Completed</div>
+              <div class="tiny muted" id="resultMeta">—</div>
+            </div>
+
+            <div class="score">
+              <div class="score__value" id="scoreValue">0/0</div>
+              <div class="score__label" id="scoreLabel">—</div>
+            </div>
+
+            <div class="divider divider--soft"></div>
+
+            <div class="resultMsg" id="resultMessage">
+              —
+            </div>
+
+            <div class="resultActions">
+              <button class="btn btn--primary" id="retryBtn" type="button">Retry Exam</button>
+              <button class="btn btn--ghost js-show" data-target="teacher" type="button">Back to Teacher</button>
+            </div>
+          </div>
+
+          <div class="breakdown card glass">
+            <div class="card__title">Question Breakdown</div>
+            <div class="tiny muted">Correctness based on demo rules.</div>
+            <div class="divider divider--soft"></div>
+            <div class="breakdownList" id="breakdownList">
+              <!-- JS -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
